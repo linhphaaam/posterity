@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Side: Insights -->
+        <div class="summary-cluster">
+            <h2>Subject detection</h2>
+            <div class="input-image">
+                <img src="{{ input_image_url }}" alt="Input Image" class="detected-image">
+                <p>A photo you uploaded</p>
+            </div>
+            <h2>Summary of Cluster</h2>
+            <div id="summary-insights">
+                <pre>{{ combined_insights }}</pre>
+            </div>
+        </div>
+
+        <!-- Center: Spiral Visualization -->
+        <div class="middle">
+            <div class="spiral-container">
+                <h2>Spiral Visualization</h2>
+                <img src="{{ spiral_plot_url }}" alt="Spiral Visualization of Posters" id="spiral-plot" width="60%">
+            </div>
+
+            <div class="timeline-container">
+                <h2>Timeline</h2>
+                <canvas id="decadeChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Right Side: Top Poster Details -->
+        <!-- <div class="poster-details">
+            <h2>Top Posters</h2>
+            <div class="poster-list">
+                {% for poster in top_posters %}
+                <div class="poster-item">
+                    <img src="{{ poster.image_path }}" alt="{{ poster.title }}" width="100">
+                    <p><strong>{{ poster.title }}</strong> <br> Decade: {{ poster.decade }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div> -->
+    </div>
+
+    <!-- Timeline: Decade Distribution -->
+    <div class="timeline-container">
+        <h2>Timeline</h2>
+        <canvas id="decadeChart"></canvas>
+    </div>
+
+    <a href="/">Back to Home</a>
+
+    <!-- JavaScript for Decade Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Data dynamically passed from Flask
+        const decadeData = {{ decade_data | tojson }};
+        const decades = decadeData.map(item => item[0]);  // Extract decades
+        const counts = decadeData.map(item => item[1]);   // Extract counts
+    
+        // Render bar chart with timeline layout
+        const ctx = document.getElementById('decadeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: decades,  // Decades on x-axis
+                datasets: [{
+                    label: 'Number of Posters',
+                    data: counts,
+                    backgroundColor: '#4285F4',
+                    borderColor: '#357ABD',
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'linear',  // Treat x-axis as numeric (timeline)
+                        title: { display: true, text: 'Decade' },
+                        ticks: {
+                            stepSize: 10,  // Ensure decades are spaced linearly
+                            callback: value => `${value}`  // Display decade as label
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Number of Posters' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+let spiralData = [];
+    let centerImage;
+    let centerImg;
+
+    function preload() {
+        // Load the spiral JSON data and the center image
+        spiralData = {{ spiral_data | tojson }};
+        centerImage = "{{ center_image }}";
+        centerImg = loadImage(centerImage);
+    }
+
+    function setup() {
+        const canvas = createCanvas(800, 800);
+        canvas.parent('spiralCanvas');
+        imageMode(CENTER);
+        textAlign(CENTER, CENTER);
+        noLoop(); // Draw once unless interaction is required
+    }
+
+    function draw() {
+        background(240);
+
+        // Draw center image
+        image(centerImg, width / 2, height / 2, 120, 160);
+
+        // Draw spiral images
+        spiralData.forEach(poster => {
+            loadImage(poster.image_path, img => {
+                const posterX = width / 2 + poster.x;
+                const posterY = height / 2 + poster.y;
+                image(img, posterX, posterY, 60, 80); // Image dimensions
+            });
+        });
+    }
+
+    function mousePressed() {
+        spiralData.forEach(poster => {
+            const posterX = width / 2 + poster.x;
+            const posterY = height / 2 + poster.y;
+            if (dist(mouseX, mouseY, posterX, posterY) < 40) {
+                alert(`Title: ${poster.title}\nSimilarity: ${poster.similarity}`);
+            }
+        });
+    }
+
+
+       <!-- Right Side: Top Poster Details -->
+        <!-- <div class="poster-details">
+            <h2>Top Posters</h2>
+            <div class="poster-list">
+                {% for poster in top_posters %}
+                <div class="poster-item">
+                    <img src="{{ poster.image_path }}" alt="{{ poster.title }}" width="100">
+                    <p><strong>{{ poster.title }}</strong> <br> Decade: {{ poster.decade }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div> -->
+    </div>
+
+    <!-- Timeline: Decade Distribution -->
+    <!-- <div class="timeline-container">
+        <h2>Timeline</h2>
+        <canvas id="decadeChart"></canvas>
+    </div> -->

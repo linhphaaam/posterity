@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Spiral Visualization</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Panel: Insights and Input Image -->
+        <div class="summary-cluster">
+            <h2>Input Image</h2>
+            <div class="input-image">
+                <img src="{{ input_image_url }}" alt="Input Image" class="detected-image">
+                <p>Your uploaded photo</p>
+            </div>
+            <h2>Cluster Insights</h2>
+            <div id="summary-insights">
+                <h3>Themes</h3>
+                <pre>{{ combined_insights.metadata_summary }}</pre>
+                <h3>Historical Context</h3>
+                <pre>{{ combined_insights.historical_summary }}</pre>
+            </div>
+        </div>
+
+        <!-- Center Panel: Interactive Spiral -->
+        <div class="middle">
+            <h2>Similarity Visualization</h2>
+            <div id="spiralCanvas"></div>
+        </div>
+    </div>
+
+    <!-- Modal for showing poster details -->
+    <div id="posterModal" class="modal" style="display: none;">
+        <div class="modal-content top-right">
+            <span class="close-btn">&times;</span>
+            <img id="modalPosterImage" src="" alt="Poster Image" style="width: 100%; max-width: 500px;">
+            <div id="posterDetails" style="text-align: center;">
+                <h3 id="posterTitle"></h3>
+                <p id="posterSimilarity"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the external JavaScript file -->
+    <script>
+        const spiralData = {{ spiral_data | tojson }};
+        const centerImage = "{{ center_image }}";
+        const decadeDataJson = '{{ decade_data | tojson | safe }}';
+    </script>
+    <script src="/static/spiral.js"></script>
+</body>
+</html>
