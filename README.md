@@ -14,7 +14,7 @@ Posterity supports three core views:
 
 ## Repository Status
 
-🔧 This repository contains partial code from early prototypes developed in p5.js and Python. It is intended as a reference snapshot of ongoing work.
+🔧 This repository contains partial code from early prototypes developed in p5.js, Python, and Javascript. It is intended as a reference snapshot of ongoing work.
 
 - Initial layout and interaction sketches for 
 - Data exploration scripts (Pandas, Matplotlib, Seaborn)
