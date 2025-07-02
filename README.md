@@ -16,9 +16,10 @@ Posterity supports three core views:
 
 🔧 This repository contains partial code from early prototypes developed in p5.js and Python. It is intended as a reference snapshot of ongoing work.
 
-- ✅ Initial layout and interaction sketches
-- ✅ Data exploration scripts (Pandas, Matplotlib, Seaborn)
-- ⚠️ Core embedding and spiral view logic to be released in a future update
+- Initial layout and interaction sketches for 
+- Data exploration scripts (Pandas, Matplotlib, Seaborn)
+- Initial embedding and spiral view logic
+- Final code for the full interactive tool to be added in the future
 
 ## Dataset Access
 
