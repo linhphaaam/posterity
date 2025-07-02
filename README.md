@@ -23,4 +23,4 @@ Posterity supports three core views:
 
 ## Dataset Access
 
-The dataset of digitized American labor posters is currently under restricted access in collaboration with the Harvard Radcliffe Schlesinger Library. We are working with the archivist to determine appropriate pathways for sharin
+The dataset of digitized American labor posters is currently under restricted access in collaboration with Lincoln Cushing. We are working with the archivist to determine appropriate pathways for sharing.
